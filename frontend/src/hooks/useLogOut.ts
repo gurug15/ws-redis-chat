@@ -1,36 +1,29 @@
 import { useState } from "react"
-import { SignupInputType } from "../lib/types"
 import { useAuthContext } from "../context/AuthContext"
 import { BACKEND_URL } from "../lib/url"
-import toast from "react-hot-toast"
 
-export const useSignup = ()=>{
+export const useLogout = ()=>{
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const {setAuthUser} = useAuthContext()
 
-    const signup = async (inputs: SignupInputType)=>{
+    const logout = async ()=>{
         try {
             setIsLoading(true)
-            const res = await fetch(`${BACKEND_URL}/api/auth/signup`,{
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(inputs)
+            const res = await fetch(`${BACKEND_URL}/api/auth/logout`,{
+                method: "POST"
             })
             const data = await res.json()
             if(!res.ok){
                 throw new Error(data.error)
             }
 
-            setAuthUser(data)
+            setAuthUser(null)
 
         } catch (error:any) {
             console.log(error.message)
-            toast.error(error.message)
         }finally{
             setIsLoading(false)
         }
     }
-    return {isLoading,signup}
+    return {isLoading,logout}
 }

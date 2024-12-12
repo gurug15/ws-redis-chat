@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
+import { LoginInputType } from "../lib/types";
+import { useState } from "react";
+import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
+	const [inputs,setInputs] = useState<LoginInputType>({
+		username: "",
+		password:""
+	})
+	const {isLoading,login} = useLogin()
+
+	const handleSubmit = (e: React.FormEvent)=>{
+		e.preventDefault();
+		login(inputs)
+	}
+
 	return (
 		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
 			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
@@ -14,7 +28,7 @@ const Login = () => {
 						<label className='label p-2 '>
 							<span className='text-base label-text'>Username</span>
 						</label>
-						<input type='text' placeholder='Enter username' className='w-full input input-bordered h-10' />
+						<input onChange={e=>setInputs({...inputs,username:e.target.value})} type='text' placeholder='Enter username' className='w-full input input-bordered h-10' />
 					</div>
 
 					<div>
@@ -22,6 +36,7 @@ const Login = () => {
 							<span className='text-base label-text'>Password</span>
 						</label>
 						<input
+						    onChange={e=>setInputs({...inputs,password:e.target.value})}
 							type='password'
 							placeholder='Enter Password'
 							className='w-full input input-bordered h-10'
@@ -35,7 +50,7 @@ const Login = () => {
 					</Link>
 
 					<div>
-						<button className='btn btn-block btn-sm mt-2'>Login</button>
+						<button onClick={handleSubmit} disabled={isLoading} className='btn btn-block btn-sm mt-2'>{isLoading?"Loading...":"Login"}</button>
 					</div>
 				</form>
 			</div>

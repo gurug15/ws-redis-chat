@@ -6,3 +6,8 @@ export interface SignupInputType {
     confirmPassword: string,
     gender: string,
 }
+
+export interface LoginInputType {
+    username: string;
+    password: string
+}
