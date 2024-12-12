@@ -106,7 +106,8 @@ export const  getMe = async (req: Request,res:Response):Promise<any>=>{
         id: user.id,
         fullName: user.fullname,
         username: user.username,
-        profilePic: user.profilePic
+        profilePic: user.profilePic,
+        gender: user.gender
     })
    } catch (error:any) {
     console.log("Error in getMe method:",error.message)
