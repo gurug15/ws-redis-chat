@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import prisma from '../db/prisma'
 import bcryptjs from 'bcryptjs'
 import { generateToken } from '../utils/geenrateTokens'
+import { Gender } from '@prisma/client'
 
 export const login = async (req:Request,res:Response):Promise<any>=>{
     try {
@@ -20,7 +21,8 @@ export const login = async (req:Request,res:Response):Promise<any>=>{
             id: user.id,
             fullName: user.fullname,
             username: user.username,
-            profilePic: user.profilePic
+            profilePic: user.profilePic,
+            gender: user.gender
         })
 
     } catch (error:any) {
@@ -70,7 +72,8 @@ export const signup =  async (req:Request,res:Response):Promise<any>=>{
             id: newUser.id,
             fullName: newUser.fullname,
             username: newUser.username,
-            profilePic: newUser.profilePic
+            profilePic: newUser.profilePic,
+            gender: newUser.gender
         })
      }else{
         return res.status(400).json({error:"invalid user Inputs"})
@@ -100,7 +103,7 @@ export const  getMe = async (req: Request,res:Response):Promise<any>=>{
    try {
     const user = await prisma.user.findUnique({where:{id: req.user.id}})
     if(!user){
-        return res.status(400).json({error:"User not Found"})
+        return res.status(400).json({message:"User not Found"})
     }
     res.status(201).json({
         id: user.id,
