@@ -6,10 +6,12 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 dotenv.config();
 
+const PORT = process.env.PORT
+
 const app = express();
 app.use(cors(
     {
-        origin: "http://localhost:5173", // Frontend URL
+        origin: [process.env.FRONTEND_URL!,"http://localhost:5173"], // Frontend URL
         credentials: true, // Allow cookies
     }
 ))
@@ -20,6 +22,6 @@ app.use("/api/auth",authRoutes)
 app.use("/api/messages",messageRoutes)
 
 
-app.listen(5000,()=>{
+app.listen(PORT,()=>{
     console.log("Listening on Port 5000")
 })
